@@ -11,20 +11,20 @@ class ViewController: UIViewController {
     
     @IBOutlet var label: UILabel!
     
-    var number: Int = 0
-    var tmp: Int = 0
-    var ans: Int = 0
+    var number: Int = 0 //代入する数
+    var tmp: Int = 0 //数を一時保管
+    var ans: Int = 0 //最終結果
     
     var float_number: Double = 0
     var float_tmp: Double = 0
     var float_ans: Double = 0
     
-    var float_location: Int = 0
+    var float_location: Int = 0 //少数点以下何桁か計算
     
     var isFloatNumber: Bool = false
     var isFloatCulculate: Bool = false
     
-    var ope: Int = 0
+    var ope: Int = 0 //計算の種類を判別
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +32,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func select1() {
+        //数値代入
         if isFloatNumber == false {
             substituteIntNumber(substituteNumber: 1)
         } else {
@@ -155,6 +156,7 @@ class ViewController: UIViewController {
 //        print(ans)
     }
     
+    //int型の計算する関数
     func calculate(firstNum num1: Int, secondNum num2: Int) -> Int {
         var result: Int = 0
         
@@ -173,6 +175,7 @@ class ViewController: UIViewController {
         return result
     }
     
+    //演算子それぞれの処理 plus, minus, times, devide
     func operatorFunc() {
         if ope == 0 {
             tmp = number
@@ -184,14 +187,18 @@ class ViewController: UIViewController {
         number = 0
     }
     
+    //整数の代入
     func substituteIntNumber(substituteNumber num: Int) {
         number = number * 10 + num
         label.text = String(number)
     }
 
+    //少数の代入
     func substituteFloatNumber(substituteNumber num: Double) {
+        //少数点以下何桁目かを数える変数
         float_location += 1
-        //pow(Double, Double)のため
+        
+        //pow(Double, Double)のためfloat_locationはDoubleでキャスト
         float_number = float_number + num / pow(10, Double(float_location))
         label.text = String(float_number)
     }
