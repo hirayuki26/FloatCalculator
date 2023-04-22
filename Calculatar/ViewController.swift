@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     //整数バージョン
     var number: Int = 0 //代入する数 教科書のnumber1
-    var tmp: Int = 0 //数を一時保管 教科書のnumber3
+    var tmp: Int = 0 //数を一時保管 教科書のnumber2
     var ans: Int = 0 //最終結果 教科書のnumber3
     
     //少数バージョン
