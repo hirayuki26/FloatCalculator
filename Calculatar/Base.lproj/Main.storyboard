@@ -208,8 +208,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="."/>
                                 <connections>
-                                    <action selector="calculateFloat" destination="BYZ-38-t0r" eventType="touchUpInside" id="8gM-OZ-SPs"/>
-                                    <action selector="select3" destination="BYZ-38-t0r" eventType="touchUpInside" id="XY3-P0-iRE"/>
+                                    <action selector="isFloat" destination="BYZ-38-t0r" eventType="touchUpInside" id="q0s-eD-2Xb"/>
                                 </connections>
                             </button>
                         </subviews>

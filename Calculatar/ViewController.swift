@@ -32,84 +32,43 @@ class ViewController: UIViewController {
     }
     
     @IBAction func select1() {
-        //数値代入
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 1)
-        } else {
-            substituteFloatNumber(substituteNumber: 1)
-        }
+        substituteNumber(substituteNumber: 1)
     }
     
     @IBAction func select2() {
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 2)
-        } else {
-            substituteFloatNumber(substituteNumber: 2)
-        }
+        substituteNumber(substituteNumber: 2)
     }
     
     @IBAction func select3() {
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 3)
-        } else {
-            substituteFloatNumber(substituteNumber: 3)
-        }
+        substituteNumber(substituteNumber: 3)
     }
     
     @IBAction func select4() {
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 4)
-        } else {
-            substituteFloatNumber(substituteNumber: 4)
-        }
+        substituteNumber(substituteNumber: 4)
     }
     
     @IBAction func select5() {
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 5)
-        } else {
-            substituteFloatNumber(substituteNumber: 5)
-        }
+        substituteNumber(substituteNumber: 5)
     }
     
     @IBAction func select6() {
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 6)
-        } else {
-            substituteFloatNumber(substituteNumber: 6)
-        }
+        substituteNumber(substituteNumber: 6)
     }
     
     @IBAction func select7() {
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 7)
-        } else {
-            substituteFloatNumber(substituteNumber: 7)
-        }
+        substituteNumber(substituteNumber: 7)
     }
     
     @IBAction func select8() {
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 8)
-        } else {
-            substituteFloatNumber(substituteNumber: 8)
-        }
+        substituteNumber(substituteNumber: 8)
     }
     
     @IBAction func select9() {
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 9)
-        } else {
-            substituteFloatNumber(substituteNumber: 9)
-        }
+        substituteNumber(substituteNumber: 9)
     }
     
     @IBAction func select0() {
-        if isFloatNumber == false {
-            substituteIntNumber(substituteNumber: 0)
-        } else {
-            substituteFloatNumber(substituteNumber: 0)
-        }
+        substituteNumber(substituteNumber: 0)
     }
     
     @IBAction func plus() {
@@ -132,24 +91,49 @@ class ViewController: UIViewController {
         ope = 4
     }
     
-    @IBAction func calculateFloat() {
+    @IBAction func isFloat() {
+        if isFloatCulculate == false {
+            isFloatCulculate = true
+            
+            //number（現在の入力）には影響なし
+            float_tmp = Double(tmp)
+            float_ans = Double(ans)
+        }
         isFloatNumber = true
-        isFloatCulculate = true
+        
+        float_number = Double(number)
     }
     
     @IBAction func clear() {
         number = 0
         tmp = 0
         ans = 0
+        float_number = 0
+        float_tmp = 0
+        float_ans = 0
+        float_location = 0
         ope = 0
         isFloatCulculate = false
+        isFloatNumber = false
         label.text = "0"
     }
     
     @IBAction func equal() {
-        ans = calculate(firstNum: tmp, secondNum: number)
-        tmp = ans
-        label.text = String(ans)
+        if isFloatCulculate == false {
+            ans = calculate(firstNum: tmp, secondNum: number)
+            tmp = ans
+            label.text = String(ans)
+        } else {
+            if isFloatNumber == false {
+                float_number = Double(number)
+            }
+            float_ans = calculateFloat(firstNum: float_tmp, secondNum: float_number)
+            print(float_number, float_tmp, float_ans)
+            float_tmp = float_ans
+            label.text = String(float_ans)
+        }
+        
+        float_location = 0
         ope = 5
 //        print(number)
 //        print(tmp)
@@ -175,32 +159,63 @@ class ViewController: UIViewController {
         return result
     }
     
-    //演算子それぞれの処理 plus, minus, times, devide
-    func operatorFunc() {
-        if ope == 0 {
-            tmp = number
-        } else if ope == 5 {
-            tmp = ans
-        } else {
-            tmp = calculate(firstNum: tmp, secondNum: number)
+    //少数の計算する関数
+    func calculateFloat(firstNum num1: Double, secondNum num2: Double) -> Double {
+        var result: Double = 0
+        
+        if ope == 1 {
+            result = num1 + num2
+        } else if ope == 2 {
+            result = num1 - num2
+        } else if ope == 3 {
+            result = num1 * num2
+        } else if ope == 4 {
+            result = num1 / num2
         }
-        number = 0
+        
+//        print(num1, num2)
+        
+        return result
     }
     
-    //整数の代入
-    func substituteIntNumber(substituteNumber num: Int) {
-        number = number * 10 + num
-        label.text = String(number)
+    //演算子それぞれの処理 plus, minus, times, devide
+    func operatorFunc() {
+        if isFloatCulculate == false {
+            if ope == 0 {
+                tmp = number
+            } else if ope == 5 {
+                tmp = ans
+            } else {
+                tmp = calculate(firstNum: tmp, secondNum: number)
+            }
+            number = 0
+        } else {
+            if ope == 0 {
+                float_tmp = float_number
+            } else if ope == 5 {
+                float_tmp = float_ans
+            } else {
+                float_tmp = calculateFloat(firstNum: float_tmp, secondNum: float_number)
+            }
+            float_number = 0.0
+            number = 0
+            float_location = 0
+            isFloatNumber = false
+        }
     }
-
-    //少数の代入
-    func substituteFloatNumber(substituteNumber num: Double) {
-        //少数点以下何桁目かを数える変数
-        float_location += 1
-        
-        //pow(Double, Double)のためfloat_locationはDoubleでキャスト
-        float_number = float_number + num / pow(10, Double(float_location))
-        label.text = String(float_number)
+    
+    //数値の代入
+    func substituteNumber(substituteNumber num: Int) {
+        if isFloatNumber == false {
+            number = number * 10 + num
+            label.text = String(number)
+        } else {
+            float_location += 1
+            
+            //pow(Double, Double)のためfloat_locationはDoubleでキャスト
+            float_number = float_number + Double(num) / pow(10, Double(float_location))
+            label.text = String(format: "%.\(float_location)f", float_number)
+        }
     }
 }
 
